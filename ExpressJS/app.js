@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const engine = require("express-handlebars");
+const errorController = require("./controllers/error");
 
 const app = express();
 
@@ -18,7 +19,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-const adminData = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 app.use(
@@ -28,12 +29,10 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/admin", adminData.routes);
-app.use("/shop", shopRoutes);
+app.use("/admin", adminRoutes);
+app.use(shopRoutes);
+// app.use("/shop", shopRoutes);
 
-app.use((req, res, next) => {
-  //   res.status(404).sendFile(path.join(__dirname, "views", "notfound.html"));
-  res.status(404).render("notfound", { pageTitle: "Page not found", path:'notfound' });
-});
+app.use(errorController.get404);
 
 app.listen(5000);
