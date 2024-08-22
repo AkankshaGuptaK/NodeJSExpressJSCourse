@@ -2,4 +2,24 @@
     </head>
     <body>
         <%- include("../includes/navigation.ejs") %>
+        <main>
+            <% if (orders.length>0){%>
+                <ul>
+                    <% orders.forEach(order=> { %>
+                        <li>
+                            <h1># <%= order.id %>
+                                <ul>
+                                    <% order.products.forEach(item=> { %>
+                                        <li><%= item.title %> (<%= item.orderItem.quantity %>)</li>
+                                        <%})%>
+                                </ul>
+                            </h1>
+                        </li>
+                        <%})%>
+                </ul>
+                
+                <% } else { %>
+                    <h1>Nothing there!</h1>
+                    <% } %>
+        </main>
         <%- include("../includes/end.ejs") %>
